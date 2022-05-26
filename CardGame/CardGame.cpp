@@ -2,6 +2,10 @@
 //
 #include <iostream>
 #include <array>
+#include <algorithm> // for std::shuffle
+#include <ctime> // for std::time
+#include <random> // for std::mt19937
+#include <cassert>
 
 enum class CardSuit
 {
@@ -102,6 +106,36 @@ void printDeck(const deck_type& deck)
     }
 
     std::cout << '\n';
+}
+
+void shuffleDeck(deck_type& deck)
+{
+    static std::mt19937 mt{ static_cast<std::mt19937::result_type>(std::time(nullptr) };
+
+    std::shuffle(deck.begin(), deck.end(), mt);
+}
+
+int getCardValue(const Card& card)
+{
+    switch (card.rank)
+    {
+    case CardRank::rank_2:        return 2;
+    case CardRank::rank_3:        return 3;
+    case CardRank::rank_4:        return 4;
+    case CardRank::rank_5:        return 5;
+    case CardRank::rank_6:        return 6;
+    case CardRank::rank_7:        return 7;
+    case CardRank::rank_8:        return 8;
+    case CardRank::rank_9:        return 9;
+    case CardRank::rank_10:       return 10;
+    case CardRank::jack:     return 10;
+    case CardRank::queen:    return 10;
+    case CardRank::king:     return 10;
+    case CardRank::ace:      return 11;
+    default:
+        assert(false && "should never happen");
+        return 0;
+    }
 }
 
 
