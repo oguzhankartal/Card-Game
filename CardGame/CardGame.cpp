@@ -41,6 +41,13 @@ struct Card {
     CardSuit suit{};
 };
 
+struct Player {
+    int score{};
+};
+
+constexpr int g_maximumScore{ 21 };
+constexpr int g_minimumDealerScore{ 17 };
+
 void printCard(const Card& card)
 {
     switch (card.rank)
@@ -136,6 +143,65 @@ int getCardValue(const Card& card)
         assert(false && "should never happen");
         return 0;
     }
+}
+
+bool playerWantsHit()
+{
+    while (true)
+    {
+        std::cout << "(h) to hit, or (s) to stand: ";
+        char ch{};
+        std::cin >> ch;
+
+        switch (ch) 
+        {
+        case 'h':
+            return true;
+        case 's':
+            return false;
+        }
+    }
+}
+
+// Returns true if the player went bust. False otherwise.
+bool playerTurn(const deck_type& deck, index_type& nextCardIndex, Player& player)
+{
+    while (true)
+    {
+        if (player.score > g_maximumScore)
+        {
+            std::cout << "You busted!\n";
+            return true;
+        }
+        else
+        {
+            if (playerWantsHit())
+            {
+                int cardValue{ getCardValue(deck.at(nextCardIndex++)) };
+                player.score += cardValue;
+                std::cout << "You were dealt a " << cardValue << " and now have " << player.score << '\n';
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+}
+
+bool playBlackjack(const deck_type& deck)
+{
+    index_type nextCardIndex{ 0 };
+
+    Player dealer{ getCardValue(deck.at(nextCardIndex++)) };
+
+    std::cout << "The dealer is showing: " << dealer.score << '\n';
+
+    Player player{ getCardValue(deck.at(nextCardIndex)) + getCardValue(deck.at(nextCardIndex + 1)) };
+
+    nextCardIndex += 2;
+
+    std::cout << "You have: " << player.score << '\n';
 }
 
 
