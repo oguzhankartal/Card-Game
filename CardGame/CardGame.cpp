@@ -189,6 +189,25 @@ bool playerTurn(const deck_type& deck, index_type& nextCardIndex, Player& player
     }
 }
 
+// Returns true if the dealer went bust. False otherwise.
+bool dealerTurn(const deck_type& deck, index_type& nextCardIndex, Player& dealer)
+{
+    while (dealer.score < g_minimumDealerScore)
+    {
+        int cardValue{ getCardValue(deck.at(nextCardIndex++)) };
+        dealer.score += cardValue;
+        std::cout << "The dealer turned up a " << cardValue << " and now has " << dealer.score << '\n';
+    }
+
+    if (dealer.score > g_maximumScore)
+    {
+        std::cout << "The dealer busted!\n";
+        return true;
+    }
+
+    return false;
+}
+
 bool playBlackjack(const deck_type& deck)
 {
     index_type nextCardIndex{ 0 };
