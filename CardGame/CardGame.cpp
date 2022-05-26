@@ -93,6 +93,17 @@ deck_type createDeck()
     return deck;
 }
 
+void printDeck(const deck_type& deck)
+{
+    for (const auto& card : deck)
+    {
+        printCard(card);
+        std::cout << ' ';
+    }
+
+    std::cout << '\n';
+}
+
 
 int main()
 {
