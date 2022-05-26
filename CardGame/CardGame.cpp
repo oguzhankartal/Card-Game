@@ -221,6 +221,21 @@ bool playBlackjack(const deck_type& deck)
     nextCardIndex += 2;
 
     std::cout << "You have: " << player.score << '\n';
+
+    if (playerTurn(deck, nextCardIndex, player)) 
+    {
+        // playerTurn returns true if player went bust.
+        return false;
+    }
+
+    if (dealerTurn(deck, nextCardIndex, dealer))
+    {
+        // dealerTurn returns true if dealer went bust.
+        // Thus, the player wins.
+        return true;
+    }
+
+    return (player.score > dealer.score);
 }
 
 
