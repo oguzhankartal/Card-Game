@@ -241,5 +241,18 @@ bool playBlackjack(const deck_type& deck)
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    auto deck{ createDeck() };
+
+    shuffleDeck(deck);
+
+    if (playBlackjack(deck))
+    {
+        std::cout << "You win!\n";
+    }
+    else
+    {
+        std::cout << "You lose!\n";
+    }
+
+    return 0;
 }
